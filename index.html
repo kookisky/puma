@@ -12,9 +12,12 @@
       html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #171529; }
       body { overscroll-behavior: none; touch-action: none; }
       #game { width: 100%; height: 100%; height: 100dvh; touch-action: none; }
+      @media (pointer: coarse) {
+        #game { height: calc(100dvh - max(40px, env(safe-area-inset-bottom))); }
+      }
       canvas { display: block; image-rendering: auto; touch-action: none; }
     </style>
-    <script type="module" crossorigin src="./assets/index-Df2Bpz26.js"></script>
+    <script type="module" crossorigin src="./assets/index-CooErkyu.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/phaser-0YPJO2g1.js">
   </head>
   <body>
