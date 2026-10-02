@@ -16,11 +16,44 @@
         #game { height: calc(100dvh - max(40px, env(safe-area-inset-bottom))); }
       }
       canvas { display: block; image-rendering: auto; touch-action: none; }
+      #startup { position: fixed; inset: 0; display: grid; place-content: center; gap: 18px; text-align: center; color: #ffe9bd; font: 16px sans-serif; background: #10152d; z-index: 120; }
+      #startup .heart { color: #ff73ac; font-size: 48px; }
+      #startup button { padding: 12px 24px; border: 1px solid #62e2cb; border-radius: 8px; background: #19223d; color: #fff0d4; font: inherit; }
     </style>
-    <script type="module" crossorigin src="./assets/index-d56jR5qi.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/phaser-0YPJO2g1.js">
+    <script type="module" crossorigin src="./assets/index-5vpomkAr.js"></script>
   </head>
   <body>
     <main id="game" aria-label="甘蔗風暴遊戲"></main>
+    <div id="startup">
+      <div class="heart" aria-hidden="true">♥</div>
+      <div id="startup-status" role="status">愛心集氣中 · 正在連線</div>
+      <button id="startup-retry" type="button" hidden>重新連線</button>
+    </div>
+    <script>
+      (() => {
+        const shell = document.getElementById('startup');
+        const status = document.getElementById('startup-status');
+        const retry = document.getElementById('startup-retry');
+        const showRecovery = () => {
+          status.textContent = '連線需要較長時間，可點按重新連線';
+          retry.hidden = false;
+        };
+        const onError = event => {
+          if (event.target instanceof HTMLScriptElement || event.target instanceof HTMLLinkElement) showRecovery();
+        };
+        const timer = window.setTimeout(showRecovery, 15000);
+        retry.onclick = () => {
+          const url = new URL(location.href);
+          url.searchParams.set('startupRetry', String(Date.now()));
+          location.replace(url.href);
+        };
+        window.addEventListener('error', onError, true);
+        window.addEventListener('puma-screen', () => {
+          window.clearTimeout(timer);
+          window.removeEventListener('error', onError, true);
+          shell.remove();
+        }, {once: true});
+      })();
+    </script>
   </body>
 </html>
