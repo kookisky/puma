@@ -20,7 +20,7 @@
       #startup .heart { color: #ff73ac; font-size: 48px; }
       #startup button { padding: 12px 24px; border: 1px solid #62e2cb; border-radius: 8px; background: #19223d; color: #fff0d4; font: inherit; }
     </style>
-    <script type="module" crossorigin src="./assets/index-5vpomkAr.js"></script>
+    
   </head>
   <body>
     <main id="game" aria-label="甘蔗風暴遊戲"></main>
@@ -34,26 +34,54 @@
         const shell = document.getElementById('startup');
         const status = document.getElementById('startup-status');
         const retry = document.getElementById('startup-retry');
-        const showRecovery = () => {
-          status.textContent = '連線需要較長時間，可點按重新連線';
+        let recovering = false;
+        let stage = 'download';
+        const showRecovery = (reason = 'timeout') => {
+          recovering = true;
+          shell.dataset.reason = reason;
+          status.textContent = reason === 'runtime'
+            ? '遊戲啟動需要重試，請點按重新連線'
+            : '連線需要較長時間，可點按重新連線';
           retry.hidden = false;
         };
         const onError = event => {
-          if (event.target instanceof HTMLScriptElement || event.target instanceof HTMLLinkElement) showRecovery();
+          if (event.target instanceof HTMLScriptElement || event.target instanceof HTMLLinkElement) showRecovery('download');
+          else if (event instanceof ErrorEvent) showRecovery('runtime');
         };
-        const timer = window.setTimeout(showRecovery, 15000);
-        retry.onclick = () => {
+        const onRejection = () => showRecovery('runtime');
+        const timer = window.setTimeout(() => showRecovery(stage), 15000);
+        const reconnect = () => {
           const url = new URL(location.href);
           url.searchParams.set('startupRetry', String(Date.now()));
           location.replace(url.href);
         };
+        retry.onclick = reconnect;
+        const onOnline = () => { if (recovering) reconnect(); };
+        window.addEventListener('online', onOnline);
         window.addEventListener('error', onError, true);
-        window.addEventListener('puma-screen', () => {
+        window.addEventListener('unhandledrejection', onRejection);
+        // Production uses one self-contained module. Its URL changes with the
+        // page retry so every module dependency receives a fresh cache key.
+        window.__pumaStart = entry => {
+          const url = new URL(entry, location.href);
+          const token = new URL(location.href).searchParams.get('startupRetry');
+          if (token) url.searchParams.set('startupRetry', token);
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.src = url.href;
+          script.onerror = () => showRecovery('download');
+          script.onload = () => { stage = 'runtime'; };
+          document.head.append(script);
+        };
+        window.addEventListener('puma-boot-ready', () => {
           window.clearTimeout(timer);
           window.removeEventListener('error', onError, true);
+          window.removeEventListener('online', onOnline);
+          window.removeEventListener('unhandledrejection', onRejection);
+          delete window.__pumaStart;
           shell.remove();
         }, {once: true});
       })();
     </script>
-  </body>
+  <script>window.__pumaStart("./assets/index-Ctr_9wNW.js");</script></body>
 </html>
