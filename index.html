@@ -5,8 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#171529" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310152d'/%3E%3Ctext x='32' y='48' text-anchor='middle' font-size='48' fill='%23ff73ac'%3E♥%3C/text%3E%3C/svg%3E" />
-    <meta name="description" content="綠色小英雄，愛心全開！" />
-    <title>甘蔗風暴 · PUMA</title>
+    <meta name="description" content="台北心動彈幕是免費瀏覽器彈幕遊戲，支援手機觸控與電腦操作。挑戰「丟棄的甘蔗」與「神秘的小卷」，收集武器升級、閃避彈幕並迎戰三階段魔王。" />
+    <title>台北心動彈幕｜免費線上彈幕遊戲</title>
+    <link rel="canonical" href="https://kookisky.github.io/puma/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:title" content="台北心動彈幕｜免費線上彈幕遊戲" />
+    <meta property="og:description" content="手機與電腦皆可遊玩，挑戰丟棄的甘蔗與神秘的小卷，收集武器升級並迎戰三階段魔王。" />
+    <meta property="og:url" content="https://kookisky.github.io/puma/" />
+    <meta property="og:image" content="https://kookisky.github.io/puma/assets/social-preview.png" />
+    <meta property="og:image:alt" content="台北心動彈幕遊戲開始畫面" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" type="application/xml" href="./sitemap.xml" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "台北心動彈幕", "url": "https://kookisky.github.io/puma/", "description": "免費瀏覽器彈幕遊戲，支援手機觸控與電腦操作，包含丟棄的甘蔗與神秘的小卷兩個關卡。", "inLanguage": "zh-Hant", "genre": "彈幕射擊", "gamePlatform": "Web browser", "isAccessibleForFree": true, "image": "https://kookisky.github.io/puma/assets/social-preview.png"}</script>
     <style>
       * { box-sizing: border-box; }
       html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #171529; }
@@ -19,11 +31,14 @@
       #startup { position: fixed; inset: 0; display: grid; place-content: center; gap: 18px; text-align: center; color: #ffe9bd; font: 16px sans-serif; background: #10152d; z-index: 120; }
       #startup .heart { color: #ff73ac; font-size: 48px; }
       #startup button { padding: 12px 24px; border: 1px solid #62e2cb; border-radius: 8px; background: #19223d; color: #fff0d4; font: inherit; }
+      #game-info { position: fixed; bottom: max(7px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 20; color: #ffe9bd; font: 12px sans-serif; }
+      html[data-game-screen="playing"] #game-info, html[data-game-screen="boot"] #game-info { display: none; }
     </style>
     
   </head>
   <body>
-    <main id="game" aria-label="甘蔗風暴遊戲"></main>
+    <main id="game" aria-label="台北心動彈幕遊戲"></main>
+    <a id="game-info" href="./about.html">台北心動彈幕：遊戲介紹與操作</a>
     <div id="startup">
       <div class="heart" aria-hidden="true">♥</div>
       <div id="startup-status" role="status">愛心集氣中 · 正在連線</div>
@@ -83,5 +98,5 @@
         }, {once: true});
       })();
     </script>
-  <script>window.__pumaStart("./assets/index-Ctr_9wNW.js");</script></body>
+  <script>window.__pumaStart("./assets/index-9vEq0idp.js");</script></body>
 </html>
